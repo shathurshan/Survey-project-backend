@@ -1,5 +1,6 @@
 package com.example.surveyproject.security.services;
 
+import com.example.surveyproject.models.ERole;
 import com.example.surveyproject.models.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,20 +24,23 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String password;
 
+    private List<ERole> role;
+
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(String id, String username, String email, String password,
+    public UserDetailsImpl(String id, String username, String email, String password, List<ERole> role,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.role = role;
         this.authorities = authorities;
     }
 
     public static UserDetailsImpl build(User user) {
         List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+                .map(role -> new SimpleGrantedAuthority(role.name()))
                 .collect(Collectors.toList());
 
         return new UserDetailsImpl(
@@ -44,6 +48,7 @@ public class UserDetailsImpl implements UserDetails {
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
+                user.getRoles(),
                 authorities);
     }
 
@@ -68,6 +73,10 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public List<ERole> getRoles() {
+        return role;
     }
 
     @Override

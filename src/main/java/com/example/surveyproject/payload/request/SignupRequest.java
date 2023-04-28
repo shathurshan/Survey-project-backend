@@ -1,6 +1,7 @@
 
 package com.example.surveyproject.payload.request;
 
+import com.example.surveyproject.models.ERole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -9,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,7 +26,8 @@ public class SignupRequest {
     @Email
     private String email;
 
-    private Set<String> roles;
+    @Size(min = 6, max = 40)
+    private List<ERole> roles;
 
     @NotBlank
     @Size(min = 6, max = 40)
