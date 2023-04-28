@@ -1,14 +1,16 @@
 package com.example.surveyproject.models;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,29 +19,25 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document("users")
+@Document(collection = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @NotNull
+    @NotBlank
     @Size(max = 20)
     private String username;
 
-    @NotNull
+    @NotBlank
     @Size(max = 50)
-//    @Email
+    @Email
     private String email;
 
-    @NotNull
+    @NotBlank
     @Size(max = 120)
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(	name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @DBRef
     private Set<Role> roles = new HashSet<>();
 
     public User(String username, String email, String password) {
