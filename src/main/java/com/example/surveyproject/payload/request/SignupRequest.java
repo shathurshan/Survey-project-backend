@@ -1,4 +1,3 @@
-
 package com.example.surveyproject.payload.request;
 
 import com.example.surveyproject.models.ERole;
@@ -9,8 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -26,8 +23,7 @@ public class SignupRequest {
     @Email
     private String email;
 
-    @Size(min = 6, max = 40)
-    private List<ERole> roles;
+    private ERole roles;
 
     @NotBlank
     @Size(min = 6, max = 40)

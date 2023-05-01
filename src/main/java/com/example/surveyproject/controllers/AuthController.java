@@ -1,7 +1,5 @@
-
 package com.example.surveyproject.controllers;
 
-import com.example.surveyproject.models.ERole;
 import com.example.surveyproject.models.User;
 import com.example.surveyproject.payload.request.LoginRequest;
 import com.example.surveyproject.payload.request.SignupRequest;
@@ -17,14 +15,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -46,25 +42,27 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         try{
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtUtils.generateJwtToken(authentication);
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            String roles = userDetails.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .toList().get(0);
 
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                roles));
+            System.out.println(roles);
+
+            return ResponseEntity.ok(new JwtResponse(jwt,
+                    userDetails.getId(),
+                    userDetails.getUsername(),
+                    userDetails.getEmail(),
+                    roles));
         }catch(AuthenticationException e){
             System.out.println(e);
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password", e);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
         }
     }
 
@@ -85,29 +83,9 @@ public class AuthController {
         // Create new user's account
         User user = new User(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
-                signUpRequest.getPassword(),
+                encoder.encode(signUpRequest.getPassword()),
                 signUpRequest.getRoles());
 
-        List<ERole> strRoles = signUpRequest.getRoles();
-        List<ERole> roles = null;
-
-        if (strRoles == null) {
-             roles.add(ERole.ROLE_USER);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case ROLE_ADMIN:
-                        roles.add(ERole.ROLE_ADMIN);
-                        break;
-                    case ROLE_USER:
-                        roles.add(ERole.ROLE_USER);
-                    default:
-                        roles.add(ERole.ROLE_USER);
-                }
-            });
-        }
-
-        user.setRoles(roles);
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));

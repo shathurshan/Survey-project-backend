@@ -1,6 +1,5 @@
 package com.example.surveyproject.security.services;
 
-import com.example.surveyproject.models.ERole;
 import com.example.surveyproject.models.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,9 +7,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
@@ -24,31 +23,28 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String password;
 
-    private List<ERole> role;
-
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(String id, String username, String email, String password, List<ERole> role,
+    public UserDetailsImpl(String id, String username, String email, String password,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.role = role;
         this.authorities = authorities;
     }
 
     public static UserDetailsImpl build(User user) {
-        List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.name()))
-                .collect(Collectors.toList());
+//        List<GrantedAuthority> authorities = user.getRoles().stream()
+//                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+//                .collect(Collectors.toList());
+        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRoles().toString()));
 
         return new UserDetailsImpl(
                 user.getId(),
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
-                user.getRoles(),
                 authorities);
     }
 
@@ -73,10 +69,6 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public String getUsername() {
         return username;
-    }
-
-    public List<ERole> getRoles() {
-        return role;
     }
 
     @Override

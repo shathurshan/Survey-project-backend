@@ -10,8 +10,6 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
 
 @Getter
 @Setter
@@ -35,11 +33,9 @@ public class User {
     @Size(max = 120)
     private String password;
 
-    @NotBlank
-    @Size(max = 120)
-    private List<ERole> roles;
+    private ERole roles;
 
-    public User(String username, String email, String password, List<ERole> roles) {
+    public User(String username, String email, String password, ERole roles) {
         this.username = username;
         this.email = email;
         this.password = password;
