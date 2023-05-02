@@ -53,16 +53,13 @@ public class AuthController {
                     .map(GrantedAuthority::getAuthority)
                     .toList().get(0);
 
-            System.out.println(roles);
-
             return ResponseEntity.ok(new JwtResponse(jwt,
                     userDetails.getId(),
                     userDetails.getUsername(),
                     userDetails.getEmail(),
                     roles));
         }catch(AuthenticationException e){
-            System.out.println(e);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Username or Password");
         }
     }
 

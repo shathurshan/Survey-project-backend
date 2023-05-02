@@ -1,6 +1,7 @@
-package com.example.surveyproject.models;
+package com.example.surveyproject.payload.request;
 
 
+import com.example.surveyproject.models.Question;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,22 +10,16 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
 import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Question {
+public class CreatePostRequest {
     @Id
     private String id;
 
     @NotBlank
-    private String question;
+    private String surveyName;
 
-    private List<Answers> answers;
-
-    public Question(String question, List<Answers> answers){
-        this.question = question;
-        this.answers = answers;
-    }
+    private List<Question> questions;
 }
