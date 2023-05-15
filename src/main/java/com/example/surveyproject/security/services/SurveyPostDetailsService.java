@@ -20,7 +20,7 @@ public class SurveyPostDetailsService {
     SurveyRepository surveyRepository;
 
     public Surveys updateSurveys(Surveys surveys) {
-        Optional <Surveys> surveysDB = this.surveyRepository.findById(surveys.getId());
+        Optional <Surveys> surveysDB = this.surveyRepository.findById(Long.valueOf(String.valueOf(surveys.getId())));
         if (surveysDB.isPresent()) {
             Surveys surveyUpdate = surveysDB.get();
             surveyUpdate.setId(surveys.getId());
@@ -40,7 +40,7 @@ public class SurveyPostDetailsService {
 
 
     public Surveys getSurveysById(String surveyId) {
-        Optional <Surveys> surveysDB = this.surveyRepository.findById(surveyId);
+        Optional <Surveys> surveysDB = this.surveyRepository.findById(Long.valueOf(surveyId));
         if (surveysDB.isPresent()){
             return surveysDB.get();
         } else{
@@ -49,7 +49,7 @@ public class SurveyPostDetailsService {
     }
 
     public void deleteSurvey(String surveyId) {
-        Optional <Surveys> surveysDB = this.surveyRepository.findById(surveyId);
+        Optional <Surveys> surveysDB = this.surveyRepository.findById(Long.valueOf(surveyId));
 
         if (surveysDB.isPresent()){
             this.surveyRepository.delete(surveysDB.get());

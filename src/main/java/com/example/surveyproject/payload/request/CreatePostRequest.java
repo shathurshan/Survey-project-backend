@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CreatePostRequest {
     @Id
-    private String id;
+    private String id = "SUR-QU-01";
 
     @NotBlank
     private String surveyName;

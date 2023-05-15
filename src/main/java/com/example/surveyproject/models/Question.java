@@ -15,8 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Question {
+
     @Id
-    private String id;
+    private long id;
 
     @NotBlank
     private String question;

@@ -1,9 +1,12 @@
 package com.example.surveyproject.controllers;
 
+import com.example.surveyproject.models.Answers;
+import com.example.surveyproject.models.Question;
 import com.example.surveyproject.models.Surveys;
 import com.example.surveyproject.payload.request.CreatePostRequest;
 import com.example.surveyproject.payload.response.MessageResponse;
 import com.example.surveyproject.repository.SurveyRepository;
+import com.example.surveyproject.security.services.SequenceGeneratorService;
 import com.example.surveyproject.security.services.SurveyPostDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +26,9 @@ public class SurveyController {
     @Autowired
     SurveyPostDetailsService surveyPostDetailsService;
 
+    @Autowired
+    SequenceGeneratorService sequenceGeneratorService;
+
     @PostMapping("/create")
     public ResponseEntity<?> createPost(@Valid @RequestBody CreatePostRequest createPostRequest){
         try {
@@ -31,9 +37,21 @@ public class SurveyController {
                         .badRequest()
                         .body(new MessageResponse("Error: Survey Name is already exist!"));
             }
-            //create new post
-            Surveys surveys = new Surveys(createPostRequest.getSurveyName(), createPostRequest.getQuestions());
 
+            List<Question> questions = createPostRequest.getQuestions();
+            long QueCounter = 1;
+            for (Question each: questions) {
+                long ansCounter = 1;
+                each.setId(QueCounter);
+                QueCounter++;
+                for (Answers answer: each.getAnswers()) {
+                    answer.setId(ansCounter);
+                    ansCounter++;
+                }
+            }
+            //create new post
+            Surveys surveys = new Surveys(createPostRequest.getSurveyName(), questions);
+            surveys.setId("SURVEY-" + sequenceGeneratorService.generateSurveySequence(Surveys.SEQUENCE_NAME));
             surveyRepository.save(surveys);
 
             return ResponseEntity.ok(new MessageResponse("The post is created successfully!"));

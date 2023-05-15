@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -16,6 +17,10 @@ import java.util.List;
 @AllArgsConstructor
 @Document(collection = "surveys")
 public class Surveys {
+
+    @Transient
+    public static final String SEQUENCE_NAME = "Survey_sequence";
+
     @Id
     private String id;
 
