@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 
-public interface SurveyRepository extends MongoRepository<Surveys, Long> {
+public interface SurveyRepository extends MongoRepository<Surveys, String> {
     Optional<Surveys> findBySurveyName(String surveyName);
 
     Boolean existsBySurveyName(String surveyName);

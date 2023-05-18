@@ -1,5 +1,6 @@
 package com.example.surveyproject.security.services;
 
+import com.example.surveyproject.models.SurveyResponseSequence;
 import com.example.surveyproject.models.SurveySequence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -27,6 +28,15 @@ public class SequenceGeneratorService {
         SurveySequence counter = mongoOperations.findAndModify(query(where("_id").is(seqName)),
                 new Update().inc("seq",1), options().returnNew(true).upsert(true),
                 SurveySequence.class);
+        return !Objects.isNull(counter) ? counter.getSeq() : 1;
+
+    }
+
+    public long generateSurveyResponseSequence(String seqName) {
+
+        SurveyResponseSequence counter = mongoOperations.findAndModify(query(where("_id").is(seqName)),
+                new Update().inc("seq",1), options().returnNew(true).upsert(true),
+                SurveyResponseSequence.class);
         return !Objects.isNull(counter) ? counter.getSeq() : 1;
 
     }

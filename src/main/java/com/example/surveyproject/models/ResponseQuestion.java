@@ -18,10 +18,10 @@ public class ResponseQuestion {
     @NotBlank
     private String question;
 
-    private String answers;
+    private String answer;
 
     public ResponseQuestion(String question, String answers){
         this.question = question;
-        this.answers = answers;
+        this.answer = answers;
     }
 }
