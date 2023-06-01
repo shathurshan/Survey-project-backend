@@ -1,6 +1,6 @@
 package com.example.surveyproject.models;
 
-import jakarta.validation.constraints.NotBlank;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,17 +13,11 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseQuestion {
+public class ResponseAnswer {
     @Id
     private long id;
 
-    @NotBlank
-    private String question;
+    private String answer;
 
-    private List<ResponseAnswer> answers;
-
-    public ResponseQuestion(String question, List<ResponseAnswer> answers){
-        this.question = question;
-        this.answers = answers;
-    }
+    private List<String> userIds;
 }

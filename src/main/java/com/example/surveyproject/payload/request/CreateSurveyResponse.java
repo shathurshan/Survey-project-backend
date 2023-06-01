@@ -17,7 +17,9 @@ import java.util.List;
 public class CreateSurveyResponse {
 
     @NotBlank
-    private String surveyName;
+    private String surveyId;
+
+    private List<String> userId;
 
     private List<ResponseQuestion> questions;
 }

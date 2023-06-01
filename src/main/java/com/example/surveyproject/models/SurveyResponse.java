@@ -26,12 +26,15 @@ public class SurveyResponse {
     private String id;
 
     @NotBlank
-    private String surveyName;
+    private String surveyId;
+
+    private List<String> userId;
 
     private List<ResponseQuestion> questions;
 
-    public SurveyResponse(String surveyName, List<ResponseQuestion> questions) {
-        this.surveyName = surveyName;
+    public SurveyResponse(String surveyId,List<String> userId, List<ResponseQuestion> questions) {
+        this.surveyId = surveyId;
         this.questions = questions;
+        this.userId  = userId;
     }
 }

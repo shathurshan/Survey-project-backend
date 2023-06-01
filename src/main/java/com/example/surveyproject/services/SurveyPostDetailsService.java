@@ -1,4 +1,4 @@
-package com.example.surveyproject.security.services;
+package com.example.surveyproject.services;
 
 
 import com.example.surveyproject.exception.ResourceNotFoundException;

@@ -5,8 +5,8 @@ import com.example.surveyproject.models.SurveyResponse;
 import com.example.surveyproject.payload.request.CreateSurveyResponse;
 import com.example.surveyproject.payload.response.MessageResponse;
 import com.example.surveyproject.repository.ResponseRepository;
-import com.example.surveyproject.security.services.SequenceGeneratorService;
-import com.example.surveyproject.security.services.SurveyResponseService;
+import com.example.surveyproject.services.SequenceGeneratorService;
+import com.example.surveyproject.services.SurveyResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +32,7 @@ public class ResponseController {
     public ResponseEntity<?> createSurveyResponse(@Valid @RequestBody CreateSurveyResponse createSurveyResponse){
         try {
             //create new post
-            SurveyResponse surveyResponse = new SurveyResponse(createSurveyResponse.getSurveyName(), createSurveyResponse.getQuestions());
+            SurveyResponse surveyResponse = new SurveyResponse(createSurveyResponse.getSurveyId(), createSurveyResponse.getUserId(), createSurveyResponse.getQuestions());
             surveyResponse.setId("SURVEY-RES-" + sequenceGeneratorService.generateSurveyResponseSequence(SurveyResponse.SEQUENCE_NAME));
             responseRepository.save(surveyResponse);
 
