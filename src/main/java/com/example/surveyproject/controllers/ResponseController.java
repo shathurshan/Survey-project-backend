@@ -32,7 +32,7 @@ public class ResponseController {
     public ResponseEntity<?> createSurveyResponse(@Valid @RequestBody CreateSurveyResponse createSurveyResponse){
         try {
             //create new post
-            SurveyResponse surveyResponse = new SurveyResponse(createSurveyResponse.getSurveyId(), createSurveyResponse.getUserId(), createSurveyResponse.getQuestions());
+            SurveyResponse surveyResponse = new SurveyResponse(createSurveyResponse.getSurveyId(), createSurveyResponse.getQuestions());
             surveyResponse.setId("SURVEY-RES-" + sequenceGeneratorService.generateSurveyResponseSequence(SurveyResponse.SEQUENCE_NAME));
             responseRepository.save(surveyResponse);
 

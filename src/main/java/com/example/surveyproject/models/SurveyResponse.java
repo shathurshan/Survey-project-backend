@@ -28,13 +28,10 @@ public class SurveyResponse {
     @NotBlank
     private String surveyId;
 
-    private List<String> userId;
-
     private List<ResponseQuestion> questions;
 
-    public SurveyResponse(String surveyId,List<String> userId, List<ResponseQuestion> questions) {
+    public SurveyResponse(String surveyId, List<ResponseQuestion> questions) {
         this.surveyId = surveyId;
         this.questions = questions;
-        this.userId  = userId;
     }
 }
