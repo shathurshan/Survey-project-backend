@@ -53,4 +53,10 @@ public class ResponseController {
         return ResponseEntity.ok().body(surveyResponseService.getAllSurveys());
     }
 
+    @PutMapping("/postsUpdate/{id}")
+    public ResponseEntity<SurveyResponse> updatePost(@PathVariable String id, @RequestBody SurveyResponse surveyResponse){
+        surveyResponse.setId(id);
+        return ResponseEntity.ok().body(surveyResponseService.updateSurveysResponse(surveyResponse));
+    }
+
 }

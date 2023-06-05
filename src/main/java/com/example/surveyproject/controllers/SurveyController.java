@@ -82,6 +82,17 @@ public class SurveyController {
        this.surveyPostDetailsService.deleteSurvey(id);
        return HttpStatus.OK;
     }
+
+    @GetMapping("/posts/{id}/{questionId}")
+    public ResponseEntity<Question> getPostsQuestionsById(@PathVariable String id, @PathVariable String questionId){
+        return ResponseEntity.ok().body(surveyPostDetailsService.getSurveysQuestionsById(id, questionId));
+    }
+
+//    @PutMapping("/postupdate/{id}/{questionId}")
+//    public ResponseEntity<Question> updateSurveyPostQuestions(@PathVariable String id,@PathVariable String questionId, @RequestBody Question question){
+//        question.setId(questionId);
+//        return ResponseEntity.ok().body(surveyPostDetailsService.updateSurveysQuestion(question, id));
+//    }
 }
 
 

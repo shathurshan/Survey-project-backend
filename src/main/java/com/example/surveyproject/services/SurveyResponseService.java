@@ -30,4 +30,18 @@ public class SurveyResponseService {
     public List<SurveyResponse> getAllSurveys() {
         return this.responseRepository.findAll();
     }
+
+    public SurveyResponse updateSurveysResponse(SurveyResponse surveyResponse) {
+        Optional<SurveyResponse> surveysResponseDB = this.responseRepository.findById(surveyResponse.getId());
+        if (surveysResponseDB.isPresent()) {
+            SurveyResponse surveyResponseUpdate = surveysResponseDB.get();
+            surveyResponseUpdate.setId(surveyResponseUpdate.getId());
+            surveyResponseUpdate.setSurveyId(surveyResponseUpdate.getSurveyId());
+            surveyResponseUpdate.setQuestions(surveyResponseUpdate.getQuestions());
+            responseRepository.save(surveyResponseUpdate);
+            return surveyResponseUpdate;
+        } else {
+            throw new ResourceNotFoundException("Record not found with id : " + surveyResponse.getId());
+        }
+    }
 }
